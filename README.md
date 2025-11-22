@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -100,7 +99,79 @@ app/
 ├── Http/
 │   └── Controllers/
 └── Providers/
-=======
-# LaravelDDD
-DDD Starter Kit
->>>>>>> 20f91f7c406485c91d3dd816c94b33579815b5dd
+```
+
+---
+
+## Installation
+
+```bash
+composer create-project your-vendor/laravel-ddd my-app
+cd my-app
+composer install
+php artisan migrate
+```
+
+---
+
+## Usage
+
+### Creating a New Bounded Context
+
+```bash
+php artisan ddd:context User
+```
+
+This creates the following structure:
+- `app/Domain/User/`
+- `app/Application/User/`
+- `app/Infrastructure/Persistence/Eloquent/User/`
+
+### Creating Domain Entities
+
+```bash
+php artisan ddd:entity User User
+```
+
+Creates `app/Domain/User/Entities/User.php`
+
+### Creating Value Objects
+
+```bash
+php artisan ddd:vo User Email
+```
+
+Creates `app/Domain/User/ValueObjects/Email.php`
+
+### Creating Use Cases
+
+```bash
+php artisan ddd:use-case User RegisterUser
+```
+
+Creates:
+- `app/Application/User/Commands/RegisterUserCommand.php`
+- `app/Application/User/Handlers/RegisterUserHandler.php`
+- `app/Application/User/DTO/RegisterUserDTO.php`
+
+### Creating Eloquent Models
+
+```bash
+php artisan ddd:eloquent-model User User
+```
+
+Creates `app/Infrastructure/Persistence/Eloquent/User/UserModel.php`
+
+### Creating Controllers
+
+```bash
+php artisan ddd:controller User RegisterUser --type=api
+```
+
+Creates `app/Http/Controllers/User/RegisterUserController.php`
+
+---
+
+## License
+
+The Laravel DDD Starter Kit is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
