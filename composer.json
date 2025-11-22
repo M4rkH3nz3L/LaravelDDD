@@ -1,16 +1,22 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "m4rkhenzel/laravel-ddd-starter",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Production-ready Laravel 12 DDD starter kit with CQRS, layered architecture (Domain, Application, Infrastructure, UI) and thin controllers.",
     "keywords": [
         "laravel",
-        "framework"
+        "framework",
+        "ddd",
+        "domain-driven-design",
+        "cqrs",
+        "clean-architecture",
+        "starter-kit"
     ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1"
     },
     "require-dev": {
