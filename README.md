@@ -2,7 +2,7 @@
 
 <p align="center">
 <strong>Laravel DDD Starter Kit</strong><br>
-<em>Opinionated, mégis 100%-ban Laravel-kompatibilis DDD alap</em>
+<em>Opinionated, yet 100% Laravel-compatible DDD foundation</em>
 </p>
 
 <p align="center">
@@ -16,56 +16,56 @@
 
 ## About Laravel DDD Starter Kit
 
-A **Laravel DDD Starter Kit** egy olyan indító projekt / sablon, amely a natív Laravel élményt megtartva vezet be **Domain-Driven Design (DDD)** architektúrát.  
-Úgy lett tervezve, mintha a Laravel készítői gondolták volna tovább a keretrendszert – nincs core módosítás, nincs hack, csak tiszta, keretrendszer-kompatibilis struktúra.
+The **Laravel DDD Starter Kit** is a starter project/template that introduces **Domain-Driven Design (DDD)** architecture while preserving the native Laravel experience.
+It's designed as if Laravel's creators had extended the framework themselves – no core modifications, no hacks, just clean, framework-compatible structure.
 
-A Starter Kit célja:
+The Starter Kit's goals:
 
-- **Tiszta szétválasztás** Domain, Application, Infrastructure és UI rétegek között.
-- **Laravel-ízű fejlesztői élmény** – mindent Artisan parancsokkal tudsz generálni.
-- **Kódminőség megőrzése** – PSR-12 / Laravel stílus, SOLID és DDD elvek mentén.
-- **Bővíthetőség** – nagy, moduláris, vállalati alkalmazásokhoz is megfelelő alap.
+- **Clean separation** between Domain, Application, Infrastructure, and UI layers.
+- **Laravel-flavored developer experience** – everything can be generated with Artisan commands.
+- **Code quality preservation** – following PSR-12 / Laravel style, SOLID and DDD principles.
+- **Scalability** – suitable foundation for large, modular, enterprise applications.
 
-### Főbb jellemzők
+### Key Features
 
-- Struktúrált DDD mappastruktúra:
-  - `app/Domain` – entitások, value objectek, domain szolgáltatások, repository interface-ek
-  - `app/Application` – use case-ek (command + handler + DTO)
-  - `app/Infrastructure` – Eloquent modellek, repository implementációk, service providerek
-- **Artisan parancsok** DDD környezethez (pl. tervezett parancsok):
+- Structured DDD folder layout:
+  - `app/Domain` – entities, value objects, domain services, repository interfaces
+  - `app/Application` – use cases (command + handler + DTO)
+  - `app/Infrastructure` – Eloquent models, repository implementations, service providers
+- **Artisan commands** for DDD environment:
   - `php artisan ddd:context User`
   - `php artisan ddd:entity User User`
   - `php artisan ddd:vo User Email`
   - `php artisan ddd:use-case User RegisterUser`
   - `php artisan ddd:eloquent-model User User`
   - `php artisan ddd:controller User RegisterUser --type=api`
-- Laravel sajátosságaira épül:
-  - Eloquent ORM, migrációk, service container, service providerek
-  - Nem ütközik a natív `app/Models`, `routes/`, `config/` struktúrával
-- A Domain réteg **framework-független**, az Infrastructure hidalja át a Laravel világába.
+- Built on Laravel features:
+  - Eloquent ORM, migrations, service container, service providers
+  - Doesn't conflict with native `app/Models`, `routes/`, `config/` structure
+- The Domain layer is **framework-independent**, Infrastructure bridges it to the Laravel world.
 
 ---
 
 ## Why DDD With Laravel?
 
-Laravel már önmagában is kiváló fejlesztői élményt ad. A DDD Starter Kit ezt egészíti ki a következőkkel:
+Laravel already provides an excellent developer experience. The DDD Starter Kit extends this with:
 
-- **Üzleti logika tiszta elválasztása** a frameworktől – könnyebben tesztelhető, hosszú távon karbantartható kód.
-- **Bounded context-ek** bevezetése (pl. `User`, `Order`, `Billing`), jól szervezett modulokkal.
-- **Fejlesztés terminálból** – az Artisan parancsokkal konzisztensen hozhatsz létre:
-  - domain entitásokat,
-  - value objecteket,
-  - repository interface-eket és implementációkat,
-  - use case-eket,
-  - vékony controllereket.
+- **Clean separation of business logic** from the framework – easier to test, maintainable long-term code.
+- Introduction of **bounded contexts** (e.g., `User`, `Order`, `Billing`), with well-organized modules.
+- **Development from the terminal** – consistently create with Artisan commands:
+  - domain entities,
+  - value objects,
+  - repository interfaces and implementations,
+  - use cases,
+  - thin controllers.
 
-A Starter Kit célja, hogy a DDD architektúra **ne lassítsa**, hanem **felgyorsítsa** a fejlesztést.
+The Starter Kit's goal is to ensure DDD architecture **accelerates** rather than slows down development.
 
 ---
 
 ## Directory Structure Overview
 
-A legfontosabb mappák:
+The most important folders:
 
 ```text
 app/
