@@ -2,21 +2,27 @@
 
 namespace App\Infrastructure\Persistence\Eloquent\User;
 
+use App\Domain\Shared\AggregateRoot;
+use App\Domain\Shared\Contracts\DomainEventDispatcher;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Domain\User\ValueObjects\Email;
+use App\Infrastructure\Shared\EloquentRepository;
+use Illuminate\Database\Eloquent\Model;
+use ReflectionClass;
 
-class UserRepositoryEloquent implements UserRepositoryInterface
+class UserRepositoryEloquent extends EloquentRepository implements UserRepositoryInterface
 {
     public function __construct(
-        private readonly UserModel $model,
-    ) {}
+        UserModel $model,
+        DomainEventDispatcher $eventDispatcher,
+    ) {
+        parent::__construct($model, $eventDispatcher);
+    }
 
     public function find(string $id): ?User
     {
-        $model = $this->model->find($id);
-
-        return $model ? $this->toDomain($model) : null;
+        return $this->findById($id);
     }
 
     public function findByEmail(string $email): ?User
@@ -35,38 +41,36 @@ class UserRepositoryEloquent implements UserRepositoryInterface
 
     public function save(mixed $entity): User
     {
-        if ($entity instanceof UserModel) {
-            $entity->save();
-
-            return $this->toDomain($entity);
-        }
-
-        if ($entity instanceof User) {
-            $model = $this->model->updateOrCreate(
-                ['id' => $entity->id()],
-                [
-                    'name' => $entity->name(),
-                    'email' => $entity->email()->value(),
-                ]
-            );
-
-            return $this->toDomain($model);
-        }
-
-        return $entity;
+        return $this->saveAggregate($entity);
     }
 
     public function delete(string $id): bool
     {
-        return $this->model->destroy($id) > 0;
+        return $this->deleteById($id);
     }
 
-    private function toDomain(UserModel $model): User
+    protected function toDomain(Model $model): User
     {
-        return new User(
-            id: $model->id,
-            name: $model->name,
-            email: new Email($model->email),
+        $reflection = new ReflectionClass(User::class);
+        $constructor = $reflection->getConstructor();
+        $constructor->setAccessible(true);
+
+        $user = $reflection->newInstanceWithoutConstructor();
+        $constructor->invoke($user, $model->id, $model->name, new Email($model->email));
+
+        return $user;
+    }
+
+    protected function toModel(AggregateRoot $aggregate): Model
+    {
+        assert($aggregate instanceof User);
+
+        return $this->model->updateOrCreate(
+            ['id' => $aggregate->id()],
+            [
+                'name' => $aggregate->name(),
+                'email' => $aggregate->email()->value(),
+            ]
         );
     }
 }

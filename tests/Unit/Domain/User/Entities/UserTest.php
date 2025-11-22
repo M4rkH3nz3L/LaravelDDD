@@ -4,7 +4,7 @@ use App\Domain\User\Entities\User;
 use App\Domain\User\ValueObjects\Email;
 
 it('creates a user with valid data', function () {
-    $user = new User(
+    $user = User::register(
         id: '123',
         name: 'John Doe',
         email: new Email('john@example.com')
@@ -15,8 +15,22 @@ it('creates a user with valid data', function () {
     expect($user->email()->value())->toBe('john@example.com');
 });
 
+it('records domain event when registering user', function () {
+    $user = User::register(
+        id: '123',
+        name: 'John Doe',
+        email: new Email('john@example.com')
+    );
+
+    expect($user->hasDomainEvents())->toBeTrue();
+
+    $events = $user->pullDomainEvents();
+    expect($events)->toHaveCount(1);
+    expect($events[0]->eventName())->toBe('user.registered');
+});
+
 it('can change user name', function () {
-    $user = new User(
+    $user = User::register(
         id: '123',
         name: 'John Doe',
         email: new Email('john@example.com')
@@ -28,7 +42,7 @@ it('can change user name', function () {
 });
 
 it('can change user email', function () {
-    $user = new User(
+    $user = User::register(
         id: '123',
         name: 'John Doe',
         email: new Email('john@example.com')

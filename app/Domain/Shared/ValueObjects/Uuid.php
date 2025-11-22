@@ -2,10 +2,11 @@
 
 namespace App\Domain\Shared\ValueObjects;
 
+use App\Domain\Shared\ValueObject;
 use InvalidArgumentException;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 
-class Uuid
+class Uuid extends ValueObject
 {
     public function __construct(
         private readonly string $value,
@@ -23,9 +24,14 @@ class Uuid
         return $this->value;
     }
 
-    public function equals(self $other): bool
+    public function equals(ValueObject $other): bool
     {
-        return $this->value === $other->value;
+        return $other instanceof self && $this->value === $other->value;
+    }
+
+    public function toNative(): string
+    {
+        return $this->value;
     }
 
     private function validate(string $value): void
@@ -33,10 +39,5 @@ class Uuid
         if (! RamseyUuid::isValid($value)) {
             throw new InvalidArgumentException("Invalid UUID format: {$value}");
         }
-    }
-
-    public function __toString(): string
-    {
-        return $this->value;
     }
 }

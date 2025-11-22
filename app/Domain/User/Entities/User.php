@@ -2,15 +2,30 @@
 
 namespace App\Domain\User\Entities;
 
+use App\Domain\Shared\AggregateRoot;
+use App\Domain\User\Events\UserRegistered;
 use App\Domain\User\ValueObjects\Email;
 
-class User
+class User extends AggregateRoot
 {
-    public function __construct(
+    private function __construct(
         private readonly string $id,
         private string $name,
         private Email $email,
     ) {}
+
+    public static function register(string $id, string $name, Email $email): self
+    {
+        $user = new self($id, $name, $email);
+
+        $user->recordDomainEvent(new UserRegistered(
+            userId: $id,
+            email: $email->value(),
+            name: $name
+        ));
+
+        return $user;
+    }
 
     public function id(): string
     {

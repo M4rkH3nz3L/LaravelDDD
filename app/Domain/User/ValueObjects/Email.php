@@ -2,9 +2,10 @@
 
 namespace App\Domain\User\ValueObjects;
 
+use App\Domain\Shared\ValueObject;
 use InvalidArgumentException;
 
-class Email
+class Email extends ValueObject
 {
     public function __construct(
         private readonly string $value,
@@ -17,9 +18,14 @@ class Email
         return $this->value;
     }
 
-    public function equals(self $other): bool
+    public function equals(ValueObject $other): bool
     {
-        return $this->value === $other->value;
+        return $other instanceof self && $this->value === $other->value;
+    }
+
+    public function toNative(): string
+    {
+        return $this->value;
     }
 
     private function validate(string $value): void
@@ -31,10 +37,5 @@ class Email
         if (! filter_var($value, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException("Invalid email format: {$value}");
         }
-    }
-
-    public function __toString(): string
-    {
-        return $this->value;
     }
 }
