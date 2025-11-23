@@ -79,6 +79,17 @@ php artisan ddd:eloquent-model Order Order # Model + Repository
 php artisan ddd:controller Order PlaceOrder --type=api  # Controller
 ```
 
+### 📦 Modular Installation System
+
+Add external modules as optional features using the stub system:
+
+```bash
+php artisan make:cms-stubs           # Generate CMS module stubs
+php artisan install:cms              # Install CMS module into your app
+```
+
+This approach keeps your application lean by only including the functionality you need.
+
 ### 🧱 Framework-Independent Domain
 
 - Pure PHP domain layer
@@ -490,6 +501,8 @@ it('validates required fields', function () {
 
 ## Available Artisan Commands
 
+### DDD Generators
+
 | Command | Description |
 |---------|-------------|
 | `ddd:context {name}` | Create a new bounded context |
@@ -500,6 +513,96 @@ it('validates required fields', function () {
 | `ddd:controller {context} {name}` | Create a thin controller |
 | `ddd:repository {context} {name}` | Create repository interface |
 | `ddd:service {context} {name}` | Create domain service |
+
+### Module Management
+
+| Command | Description |
+|---------|-------------|
+| `make:cms-stubs` | Generate CMS module stub files |
+| `install:cms [--force]` | Install CMS module from stubs |
+
+---
+
+## Modular Installation System
+
+The Laravel DDD Starter Kit includes a powerful modular installation system that allows you to add optional features without bloating your core application.
+
+### How It Works
+
+1. **Generate Stubs**: Create pre-configured module files
+2. **Install Modules**: Copy files to your application structure
+3. **Keep Lean**: Only install what you need
+
+### Example: CMS Module
+
+#### Step 1: Generate CMS Stubs
+
+```bash
+php artisan make:cms-stubs
+```
+
+This creates a complete Article management system in `stubs/cms/`:
+
+```
+stubs/cms/
+├── Domain/Article/
+│   ├── Entities/Article.php
+│   ├── ValueObjects/
+│   │   ├── ArticleId.php
+│   │   └── Slug.php
+│   └── Repositories/ArticleRepositoryInterface.php
+├── Application/Article/
+│   ├── Commands/
+│   ├── Queries/
+│   ├── Handlers/
+│   └── DTO/
+├── Infrastructure/Persistence/Eloquent/Article/
+│   ├── ArticleModel.php
+│   └── ArticleRepositoryEloquent.php
+└── database/
+    ├── migrations/
+    └── seeders/
+```
+
+#### Step 2: Install the CMS Module
+
+```bash
+php artisan install:cms
+```
+
+This command:
+- Copies all files to the correct DDD layers
+- Runs database migrations
+- Optionally seeds sample data
+- Clears application cache
+
+The Article domain is now part of your application!
+
+#### Step 3: Register Repository Binding
+
+Add to `app/Infrastructure/Providers/DddServiceProvider.php`:
+
+```php
+$this->app->bind(
+    \App\Domain\Article\Repositories\ArticleRepositoryInterface::class,
+    \App\Infrastructure\Persistence\Eloquent\Article\ArticleRepositoryEloquent::class
+);
+```
+
+### Creating Your Own Modules
+
+You can create similar installation commands for any feature:
+
+1. Create a `MakeYourModuleStubsCommand`
+2. Generate stub files following DDD structure
+3. Create an `InstallYourModuleCommand` to copy files
+4. Keep modules optional and installable on-demand
+
+**Benefits:**
+- Clean separation of concerns
+- Only install features you need
+- Easy to share modules between projects
+- Maintains DDD architecture
 
 ---
 
