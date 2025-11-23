@@ -700,7 +700,7 @@ The Laravel DDD Starter Kit is open-sourced software licensed under the [MIT Lic
 ## Resources
 
 - **Packagist**: [m4rkhenzel/laravel-ddd-starter](https://packagist.org/packages/m4rkhenzel/laravel-ddd-starter)
-- **GitHub**: [Your Repository](https://github.com/m4rkhenzel/laravel-ddd-starter)
+- **GitHub**: [LaravelDDD](https://github.com/m4rkhenzel/laravel-ddd-starter)
 - **Laravel Documentation**: [https://laravel.com/docs](https://laravel.com/docs)
 - **DDD Resources**: [Domain-Driven Design Reference](https://www.domainlanguage.com/ddd/)
 
